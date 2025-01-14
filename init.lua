@@ -619,9 +619,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -631,6 +629,8 @@ require('lazy').setup({
         -- ts_ls = {},
         --
 
+        gopls = {},
+        rust_analyzer = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -641,7 +641,7 @@ require('lazy').setup({
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
@@ -922,6 +922,32 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        textobjects = {
+          move = {
+            enable = true,
+            set_jumps = true, -- whether to set jumps in the jumplist
+            goto_next_start = {
+              [']f'] = { query = '@function.outer', desc = 'Next [f]unction' },
+              [']c'] = { query = '@class.outer', desc = 'Next [c]lass' },
+              [']C'] = { query = '@conditional.outer', desc = 'Next [C]onditional' },
+              [']]'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+              [']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
+            },
+            goto_previous_start = {
+              ['[f'] = { query = '@function.outer', desc = 'Previous [f]unction' },
+              ['[c'] = { query = '@class.outer', desc = 'Previous [c]lass' },
+              ['[['] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+              ['[C'] = { query = '@conditional.outer', desc = 'Previous [C]onditional' },
+            },
+          },
+        },
+      }
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
