@@ -239,6 +239,119 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      bigfile = { enabled = true },
+      indent = { enabled = true },
+      input = { enabled = true },
+      notifier = {
+        enabled = true,
+        timeout = 3000,
+      },
+      quickfile = { enabled = true },
+      scroll = { enabled = true },
+      styles = {
+        notification = {
+          -- wo = { wrap = true } -- Wrap notifications
+        },
+      },
+    },
+    keys = {
+      {
+        '<leader>nh',
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = 'Notification History',
+      },
+      {
+        '<leader>bd',
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = 'Delete Buffer',
+      },
+      {
+        '<leader>dr',
+        function()
+          Snacks.rename.rename_file()
+        end,
+        desc = '[d]ocument [r]ename',
+      },
+      {
+        '<leader>gB',
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = 'Git Browse',
+        mode = { 'n', 'v' },
+      },
+      {
+        '<leader>gb',
+        function()
+          Snacks.git.blame_line()
+        end,
+        desc = 'Git Blame Line',
+      },
+      {
+        '<leader>gf',
+        function()
+          Snacks.lazygit.log_file()
+        end,
+        desc = 'Lazygit Current File History',
+      },
+      {
+        '<leader>gg',
+        function()
+          Snacks.lazygit()
+        end,
+        desc = 'Lazygit',
+      },
+      {
+        '<leader>gl',
+        function()
+          Snacks.lazygit.log()
+        end,
+        desc = 'Lazygit Log (cwd)',
+      },
+      {
+        '<leader>nd',
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = 'Dismiss All Notifications',
+      },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'VeryLazy',
+        callback = function()
+          -- Setup some globals for debugging (lazy-loaded)
+          _G.dd = function(...)
+            Snacks.debug.inspect(...)
+          end
+          _G.bt = function()
+            Snacks.debug.backtrace()
+          end
+          vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+          -- Create some toggle mappings
+          Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>ts'
+          Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>tw'
+          Snacks.toggle.diagnostics():map '<leader>td'
+          Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map '<leader>tc'
+          Snacks.toggle.treesitter():map '<leader>tt'
+          Snacks.toggle.inlay_hints():map '<leader>th'
+          Snacks.toggle.indent():map '<leader>ti'
+          Snacks.toggle.dim():map '<leader>tD'
+        end,
+      })
+    end,
+  },
+  {
     'rmagatti/auto-session',
     lazy = false,
 
@@ -613,16 +726,6 @@ require('lazy').setup({
                 vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
               end,
             })
-          end
-
-          -- The following code creates a keymap to toggle inlay hints in your
-          -- code, if the language server you are using supports them
-          --
-          -- This may be unwanted, since they displace some of your code
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
           end
         end,
       })
