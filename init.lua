@@ -239,6 +239,48 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local harpoon = require 'harpoon'
+      harpoon:setup()
+
+      vim.keymap.set('n', '<leader>ha', function()
+        harpoon:list():add()
+      end, { desc = '[H]arpoon [A]dd' })
+
+      vim.keymap.set('n', '<leader>hh', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end, { desc = '[H]arpoon menu}' })
+
+      vim.keymap.set('n', '<leader>1', function()
+        harpoon:list():select(1)
+      end, { desc = 'Harpoon 1' })
+
+      vim.keymap.set('n', '<leader>2', function()
+        harpoon:list():select(2)
+      end, { desc = 'Harpoon 2' })
+
+      vim.keymap.set('n', '<leader>3', function()
+        harpoon:list():select(3)
+      end, { desc = 'Harpoon 3' })
+
+      vim.keymap.set('n', '<leader>4', function()
+        harpoon:list():select(4)
+      end, { desc = 'Harpoon 4' })
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set('n', '<leader>h[', function()
+        harpoon:list():prev()
+      end, { desc = '[H]arpoon prev' })
+
+      vim.keymap.set('n', '<leader>h]', function()
+        harpoon:list():next()
+      end, { desc = '[H]arpoon next' })
+    end,
+  },
+  {
     'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
@@ -470,7 +512,10 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>h', group = '[H]arpoon', mode = { 'n' } },
+        { '<leader>g', group = '[G]it', mode = { 'n' } },
+        { '<leader>b', group = '[B]uffer', mode = { 'n' } },
+        { '<leader>h', group = '[N]otifications', mode = { 'n' } },
       },
     },
   },
