@@ -294,52 +294,15 @@ require('lazy').setup({
       picker = {},
     },
     keys = {
-      {
-        '<leader>nh',
-        function() Snacks.notifier.show_history() end,
-        desc = 'Notification History',
-      },
-      {
-        '<leader>bd',
-        function() Snacks.bufdelete() end,
-        desc = 'Delete Buffer',
-      },
-      {
-        '<leader>dr',
-        function() Snacks.rename.rename_file() end,
-        desc = '[d]ocument [r]ename',
-      },
-      {
-        '<leader>gB',
-        function() Snacks.gitbrowse() end,
-        desc = 'Git Browse',
-        mode = { 'n', 'v' },
-      },
-      {
-        '<leader>gb',
-        function() Snacks.git.blame_line() end,
-        desc = 'Git Blame Line',
-      },
-      {
-        '<leader>gf',
-        function() Snacks.lazygit.log_file() end,
-        desc = 'Lazygit Current File History',
-      },
-      {
-        '<leader>gg',
-        function() Snacks.lazygit() end,
-        desc = 'Lazygit',
-      },
-      {
-        '<leader>gl',
-        function() Snacks.lazygit.log() end,
-        desc = 'Lazygit Log (cwd)',
-      },
-      {
-        '<leader>nd',
-        function() Snacks.notifier.hide() end,
-        desc = 'Dismiss All Notifications',
-      },
+      { '<leader>nh', function() Snacks.notifier.show_history() end, desc = 'Notification History' },
+      { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Delete Buffer' },
+      { '<leader>dr', function() Snacks.rename.rename_file() end, desc = '[d]ocument [r]ename' },
+      { '<leader>gB', function() Snacks.gitbrowse() end, desc = 'Git Browse', mode = { 'n', 'v' } },
+      { '<leader>gb', function() Snacks.git.blame_line() end, desc = 'Git Blame Line' },
+      { '<leader>gf', function() Snacks.lazygit.log_file() end, desc = 'Lazygit Current File History' },
+      { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
+      { '<leader>gl', function() Snacks.lazygit.log() end, desc = 'Lazygit Log (cwd)' },
+      { '<leader>nd', function() Snacks.notifier.hide() end, desc = 'Dismiss All Notifications' },
 
       --- picker
       { '<leader>,', function() Snacks.picker.buffers() end, desc = 'Find Buffers' },
