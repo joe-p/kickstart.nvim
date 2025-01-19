@@ -115,9 +115,7 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
+vim.schedule(function() vim.opt.clipboard = 'unnamedplus' end)
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -209,9 +207,7 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+  callback = function() vim.highlight.on_yank() end,
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -263,38 +259,16 @@ require('lazy').setup({
       local harpoon = require 'harpoon'
       harpoon:setup()
 
-      vim.keymap.set('n', '<leader>ha', function()
-        harpoon:list():add()
-      end, { desc = '[H]arpoon [A]dd' })
-
-      vim.keymap.set('n', '<leader> ', function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = '[H]arpoon menu' })
-
-      vim.keymap.set('n', '<leader>1', function()
-        harpoon:list():select(1)
-      end, { desc = 'Harpoon 1' })
-
-      vim.keymap.set('n', '<leader>2', function()
-        harpoon:list():select(2)
-      end, { desc = 'Harpoon 2' })
-
-      vim.keymap.set('n', '<leader>3', function()
-        harpoon:list():select(3)
-      end, { desc = 'Harpoon 3' })
-
-      vim.keymap.set('n', '<leader>4', function()
-        harpoon:list():select(4)
-      end, { desc = 'Harpoon 4' })
+      vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc = '[H]arpoon [A]dd' })
+      vim.keymap.set('n', '<leader> ', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[H]arpoon menu' })
+      vim.keymap.set('n', '<leader>1', function() harpoon:list():select(1) end, { desc = 'Harpoon 1' })
+      vim.keymap.set('n', '<leader>2', function() harpoon:list():select(2) end, { desc = 'Harpoon 2' })
+      vim.keymap.set('n', '<leader>3', function() harpoon:list():select(3) end, { desc = 'Harpoon 3' })
+      vim.keymap.set('n', '<leader>4', function() harpoon:list():select(4) end, { desc = 'Harpoon 4' })
 
       -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set('n', '<leader>h[', function()
-        harpoon:list():prev()
-      end, { desc = '[H]arpoon prev' })
-
-      vim.keymap.set('n', '<leader>h]', function()
-        harpoon:list():next()
-      end, { desc = '[H]arpoon next' })
+      vim.keymap.set('n', '<leader>h[', function() harpoon:list():prev() end, { desc = '[H]arpoon prev' })
+      vim.keymap.set('n', '<leader>h]', function() harpoon:list():next() end, { desc = '[H]arpoon next' })
     end,
   },
   {
@@ -321,66 +295,48 @@ require('lazy').setup({
     keys = {
       {
         '<leader>nh',
-        function()
-          Snacks.notifier.show_history()
-        end,
+        function() Snacks.notifier.show_history() end,
         desc = 'Notification History',
       },
       {
         '<leader>bd',
-        function()
-          Snacks.bufdelete()
-        end,
+        function() Snacks.bufdelete() end,
         desc = 'Delete Buffer',
       },
       {
         '<leader>dr',
-        function()
-          Snacks.rename.rename_file()
-        end,
+        function() Snacks.rename.rename_file() end,
         desc = '[d]ocument [r]ename',
       },
       {
         '<leader>gB',
-        function()
-          Snacks.gitbrowse()
-        end,
+        function() Snacks.gitbrowse() end,
         desc = 'Git Browse',
         mode = { 'n', 'v' },
       },
       {
         '<leader>gb',
-        function()
-          Snacks.git.blame_line()
-        end,
+        function() Snacks.git.blame_line() end,
         desc = 'Git Blame Line',
       },
       {
         '<leader>gf',
-        function()
-          Snacks.lazygit.log_file()
-        end,
+        function() Snacks.lazygit.log_file() end,
         desc = 'Lazygit Current File History',
       },
       {
         '<leader>gg',
-        function()
-          Snacks.lazygit()
-        end,
+        function() Snacks.lazygit() end,
         desc = 'Lazygit',
       },
       {
         '<leader>gl',
-        function()
-          Snacks.lazygit.log()
-        end,
+        function() Snacks.lazygit.log() end,
         desc = 'Lazygit Log (cwd)',
       },
       {
         '<leader>nd',
-        function()
-          Snacks.notifier.hide()
-        end,
+        function() Snacks.notifier.hide() end,
         desc = 'Dismiss All Notifications',
       },
     },
@@ -389,12 +345,8 @@ require('lazy').setup({
         pattern = 'VeryLazy',
         callback = function()
           -- Setup some globals for debugging (lazy-loaded)
-          _G.dd = function(...)
-            Snacks.debug.inspect(...)
-          end
-          _G.bt = function()
-            Snacks.debug.backtrace()
-          end
+          _G.dd = function(...) Snacks.debug.inspect(...) end
+          _G.bt = function() Snacks.debug.backtrace() end
           vim.print = _G.dd -- Override print to use snacks for `:=` command
 
           -- Create some toggle mappings
@@ -431,9 +383,7 @@ require('lazy').setup({
       'MunifTanjim/nui.nvim',
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
-    config = function()
-      vim.keymap.set('n', '<leader>wf', '<cmd>Neotree position=float<CR>', { desc = '[w]orkspace [f]iles' })
-    end,
+    config = function() vim.keymap.set('n', '<leader>wf', '<cmd>Neotree position=float<CR>', { desc = '[w]orkspace [f]iles' }) end,
   },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
@@ -558,9 +508,7 @@ require('lazy').setup({
 
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
+        cond = function() return vim.fn.executable 'make' == 1 end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
@@ -634,17 +582,20 @@ require('lazy').setup({
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
-      vim.keymap.set('n', '<leader>s/', function()
-        builtin.live_grep {
-          grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
-        }
-      end, { desc = '[S]earch [/] in Open Files' })
+      vim.keymap.set(
+        'n',
+        '<leader>s/',
+        function()
+          builtin.live_grep {
+            grep_open_files = true,
+            prompt_title = 'Live Grep in Open Files',
+          }
+        end,
+        { desc = '[S]earch [/] in Open Files' }
+      )
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
     end,
   },
 
@@ -887,9 +838,7 @@ require('lazy').setup({
     keys = {
       {
         '<leader>bf',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
+        function() require('conform').format { async = true, lsp_format = 'fallback' } end,
         mode = '',
         desc = '[F]ormat buffer',
       },
@@ -1032,9 +981,7 @@ require('lazy').setup({
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      statusline.section_location = function() return '%2l:%-2v' end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
